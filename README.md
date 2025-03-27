@@ -1,7 +1,7 @@
 
 # VisualHPLC
 
-VisualHPLC ist eine Sammlung von Python-Skripten, die für die Auswertung von HPLC-Daten im Rahmen einer BSc-Arbeit entwickelt wurden. Sie ermöglichen es, aus Excel-Dateien einfach und schnell wissenschaftlich ansprechende Diagramme zu erstellen.
+VisualHPLC ist eine Sammlung von Python-Skripten, die für die Auswertung von HPLC-Daten im Rahmen meiner BSc-Arbeit geschrieben wurden. Sie ermöglichen es, aus Excel-Dateien einfach und schnell wissenschaftlich ansprechende Diagramme zu erstellen.
 
 ## Features
 - Automatisierte Erstellung wissenschaftlich akkurater Diagramme
