@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import os
 
 # Pfad zur Excel-Datei und Speicherpfad für die Diagramme
-excel_datei = r'Pfad/Auswertung_CBilanz.xlsx'
-speicherpfad = r"Pfad/Diagramme/C-Bilanz/"
+excel_datei = r'/home/thomas/Desktop/bsc/Auswertung_CBilanz.xlsx'
+speicherpfad = r"/home/thomas/Desktop/bsc/Diagramme/C-Bilanz/"
 
 # Ordner für Diagramme erstellen, falls nicht vorhanden
 if not os.path.exists(speicherpfad):
@@ -60,7 +60,7 @@ for sheet_name in wb.sheetnames:
     delta_ppta_werte = [(wert, std, name) for wert, std, name in gefilterte_werte if '(Δaco1_Ppta)' in name]
 
     # Diagrammerstellung basierend auf TU2.0, Δaco1, TU2.0_Ppta und Δaco1_Ppta Werten
-    fig, ax = plt.subplots(figsize=(8, 6), dpi=300)
+    fig, ax = plt.subplots(figsize=(6, 6), dpi=300)
 
     # Gestapelte Balken erstellen
     bottom_tu2 = 0
@@ -145,10 +145,10 @@ for sheet_name in wb.sheetnames:
 
         # Diagrammeinstellungen und Speichern
     ax.set_title(diagramm_titel, fontsize=14, family='sans-serif')
-    ax.set_ylabel("Cmol", fontsize=12, family='sans-serif')
+    ax.set_ylabel("Carbon Equivalents (Cmol$_{produced}$/Cmol$_{consumed}$)", fontsize=12, family='sans-serif')
     ax.legend(handles=handles, labels=labels, loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=4, frameon=False)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(True)
+    ax.spines['right'].set_visible(True)
 
     plt.xticks(rotation=45, ha='right', fontsize=10, family='sans-serif')
     plt.yticks(fontsize=10, family='sans-serif')
