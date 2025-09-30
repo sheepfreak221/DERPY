@@ -4,7 +4,7 @@ import matplotlib.lines as mlines
 
 # Pfad zur Excel-Datei mit mehreren Arbeitsmappen
 excel_path = r'/home/thomas/Desktop/bsc/Auswertung_HPLC.xlsx'
-output_path = r'/home/thomas/Desktop/bsc/Diagramme/HPLC/'
+output_path = r'/home/thomas/Desktop/bsc/Diagramme/HPLC'
 
 # Farben für farbenblindenfreundliche Darstellung (gleich wie C-Bilanz)
 farben_fix = {
@@ -129,11 +129,6 @@ for sheet_name in excel_file.sheet_names:
         # Für 2-Butanol zweite Achse verwenden
         target_ax = ax2 if base_name == "2-Butanol" else ax
 
-        ax.errorbar(
-            x, y, yerr=yerr, fmt=marker,
-            color=color, linestyle=linestyle,
-            capsize=3, alpha=0.6, markersize=4, linewidth=1,
-        )
         target_ax.errorbar(
             x, y, yerr=yerr, fmt=marker,
             color=color, linestyle=linestyle,
