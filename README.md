@@ -2,7 +2,8 @@
 # DER.PY
 
 
-**Der.py** ist eine Sammlung von Python-Skripten die ich für die Auswertung bioprozesstechnologischer Messwerte, im Rahmen meiner **BSc-Arbeit** geschrieben habe.
+**Der.py** ist eine Sammlung von Python-Skripten die ich für die Auswertung bioprozesstechnologischer Messwerte, im Rahmen meiner **BSc-Arbeit** geschrieben habe - sauber strukturiert, gut dokumentiert, keineswegs Spaghetti-Code und auch nicht mit heißen Nadeln gestrickt.
+
 Es automatisiert das Erstellen von **wissenschaftlichen Diagrammen** aus:
 
 - OD600/OD660-Messungen
