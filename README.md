@@ -70,9 +70,9 @@ derpy/
 ```
 
 ## Verwendung
-Platziere die xlsx-Dateien mit den Rohdaten im Verzeichnis **Rohdaten**. Achte darauf, dass die Dateien denselben Aufbau wie die Beispiel-Dateien (*Auswertung_CBilanz.xlsx*, *Auswertung_HPLC.xlsx*, *Auswertung_OD.xlsx*) haben – am einfachsten passt man die eigenen Daten direkt an diese Dateien an. Passe den Pfad und die Parameter in der **config.py** an, um deine spezifischen Anforderungen zu erfüllen.
+Platziere die xlsx-Dateien mit den Rohdaten im Verzeichnis **Rohdaten**. Achte darauf, dass die Dateien denselben Aufbau wie die Beispiel-Dateien (`Auswertung_CBilanz.xlsx`, `Auswertung_HPLC.xlsx`, `Auswertung_OD.xlsx`) haben – am einfachsten passt man die eigenen Daten direkt an diese Dateien an. Passe den Pfad und die Parameter in der `config.py` an, um deine spezifischen Anforderungen zu erfüllen.
 
-Führe nun in der virtuellen Umgebung der.py aus - die benötigten Verzeichnisse für die Diagramme werden automatisch erstellt.
+Führe nun in der virtuellen Umgebung `der.py` aus - die benötigten Verzeichnisse für die Diagramme werden automatisch erstellt.
 
 ## Warum „DER.PY“?
 
