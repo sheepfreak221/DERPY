@@ -1,9 +1,17 @@
+from config import base_path, fig_size
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
 # Pfad zur Excel-Datei mit mehreren Arbeitsmappen
-excel_path = r'/home/thomas/Desktop/bsc/Auswertung_OD.xlsx'
+excel_path = os.path.join(base_path, "Rohdaten", "Auswertung_OD.xlsx")
+
+output_subpath = os.path.join("Diagramme", "OD")
+output_dir = os.path.join(base_path, output_subpath)
+os.makedirs(output_dir, exist_ok=True)
+
+# Lade die Excel-Datei
 excel_file = pd.ExcelFile(excel_path)
 
 # Definierte Farben für OD660 und OD600
@@ -41,7 +49,7 @@ for sheet_name in excel_file.sheet_names:
     std_dev = df.groupby('time [h]').std()
 
     # Plot vorbereiten
-    fig, ax = plt.subplots(figsize=(6, 6))
+    fig, ax = plt.subplots(figsize=fig_size)
 
     # Handles für Legenden
     substance_handles = {}
@@ -148,7 +156,8 @@ for sheet_name in excel_file.sheet_names:
     plt.tight_layout()
 
     # Diagramm als PNG speichern
-    output_filename = fr"/home/thomas/Desktop/bsc/Diagramme/OD/OD_{sheet_name}.png"
+    output_filename = f"{output_dir}/OD_{sheet_name}.png"
+
     plt.savefig(output_filename, dpi=300, format='png')
 
     # Diagramm schließen

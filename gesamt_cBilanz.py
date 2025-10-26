@@ -1,42 +1,28 @@
+from config import base_path, farben_fix
+import pandas as pd
 import openpyxl
 import matplotlib.pyplot as plt
 import os
 import numpy as np
 
-# Pfad zur Excel-Datei und Speicherpfad für das Diagramm
-excel_datei = r'/home/thomas/Desktop/bsc/Auswertung_CBilanz.xlsx'
-speicherpfad = r"/home/thomas/Desktop/bsc/Diagramme/C-Bilanz/gesamt"
+# Pfad zur Excel-Datei mit mehreren Arbeitsmappen
+excel_path = os.path.join(base_path, "Rohdaten", "Auswertung_CBilanz.xlsx")
+
+output_subpath = os.path.join("Diagramme", "CBilanz")
+output_dir = os.path.join(base_path, output_subpath)
+os.makedirs(output_dir, exist_ok=True)
+
+# Lade die Excel-Datei
+excel_file = pd.ExcelFile(excel_path)
 
 title = "Total C-Balance from ADH4 Tests"
-
-# Ordner für Diagramme erstellen, falls nicht vorhanden
-if not os.path.exists(speicherpfad):
-    os.makedirs(speicherpfad)
-
-# Wissenschaftlich bevorzugte Farben
-farben_fix = {
-    "2,3-Butanediol": "#1f77b4",
-    "Acetate": "#ff7f0e",
-    "2-Butanone": "#2ca02c",
-    "Propionate": "#d62728",
-    "1-Propanol": "#9467bd",
-    "Ethylene glycol": "#8c564b",
-    "Methanol": "#e377c2",
-    "Ethanol": "#7f7f7f",
-    "1,2-Propanediol": "#ffcc00",
-    "Biomass": "#ff99cc",
-    "Propanal": "#bcbd22",
-    "Formate": "#00aaff",
-    "2-Butanol": "#ff1493"
-}
-
 
 def get_color(substanz):
     return farben_fix.get(substanz, "#d9d9d9")
 
 
 # Arbeitsmappe öffnen
-wb = openpyxl.load_workbook(excel_datei, data_only=True)
+wb = openpyxl.load_workbook(excel_path, data_only=True)
 
 # Diagrammerstellung
 fig, ax = plt.subplots(figsize=(8, 6), dpi=300)
@@ -94,7 +80,10 @@ plt.yticks(fontsize=10, family='sans-serif')
 plt.tight_layout()
 
 # Speichern
-plt.savefig(os.path.join(speicherpfad, "C-Bilanz_Gesamt.png"), bbox_inches='tight')
+output_filename = f"{output_dir}/C-Bilanz_Gesamt.png"
+plt.savefig(output_filename, dpi=300, format='png')
+
+#plt.savefig(os.path.join(output_dir, "C-Bilanz_Gesamt.png"), bbox_inches='tight')
 plt.close()
 
 print("Gesamtdiagramm erfolgreich erstellt und gespeichert.")

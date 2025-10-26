@@ -1,44 +1,15 @@
+from config import base_path, farben_fix, marker_fix, fig_size
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
 # Pfad zur Excel-Datei mit mehreren Arbeitsmappen
-excel_path = r'/home/thomas/Desktop/bsc/Auswertung_HPLC.xlsx'
-output_path = r'/home/thomas/Desktop/bsc/Diagramme/HPLC/Stammvergleich'
+excel_path = os.path.join(base_path, "Rohdaten", "Auswertung_HPLC.xlsx")
 
-# Farben und Marker für die Darstellung
-farben_fix = {
-    "2,3-Butanediol": "#1f77b4",  # Blau
-    "Acetate": "#ff7f0e",  # Orange
-    "2-Butanone": "#2ca02c",  # Grün
-    "Propionate": "#d62728",  # Rot
-    "1-Propanol": "#9467bd",  # Violett
-    "Ethylene glycol": "#8c564b",  # Braun
-    "Methanol": "#e377c2",  # Pink
-    "Ethanol": "#7f7f7f",  # Grau
-    "1,2-Propanediol": "#ffcc00",  # Dunkelgelb
-    "Biomass": "#17becf",  # Türkis
-    "Propanal": "#bcbd22",  # Olivgrün
-    "Formate": "#00bfff",  # Cyan
-    "2-Butanol": "#ff1493"  # Helles Pink
-}
-
-# Marker für Substanzen
-marker_fix = {
-    "2,3-Butanediol": 'o',
-    "Acetate": 's',
-    "2-Butanone": 'D',
-    "Propionate": '^',
-    "1-Propanol": '<',
-    "Ethylene glycol": '>',
-    "Methanol": 'p',
-    "Ethanol": 'v',
-    "1,2-Propanediol": '*',
-    "Biomass": 'X',
-    "Propanal": 'H',
-    "Formate": 'P',  # Neuer Marker
-    "2-Butanol": 'P'  # Neuer Marker
-}
+output_subpath = os.path.join("Diagramme", "HPLC", "Stammvergleich")
+output_dir = os.path.join(base_path, output_subpath)
+os.makedirs(output_dir, exist_ok=True)
 
 # Lade die Excel-Datei
 excel_file = pd.ExcelFile(excel_path)
@@ -55,7 +26,6 @@ for sheet_name in sheet_names:
 
         #Entferne Kommas aus dem Basisnamen, um sicherzustellen, dass der Vergleich funktioniert
         base_name_cleaned = base_name.replace(',', '')  # Entferne Kommas
-       # base_name_cleaned = base_name  # Keine Entfernung von Kommas mehr
 
         # Überprüfen, ob das Basis-Arbeitsblatt existiert
         if base_name_cleaned in [name.replace(',', '') for name in sheet_names]:
@@ -109,7 +79,7 @@ for sheet_name in sheet_names:
                 continue  # Überspringe diese Iteration und gehe zum nächsten Paar
 
             # Abschnitt 1: Substanzen aus dem ersten DataFrame darstellen
-            fig, ax1 = plt.subplots(figsize=(6, 6))
+            fig, ax1 = plt.subplots(figsize=fig_size)
             ax2 = ax1.twinx()  # Zweite Achse für 2-Butanol vorbereiten
 
             # Handles und Labels für die Legenden vorbereiten
@@ -122,12 +92,10 @@ for sheet_name in sheet_names:
                     '(Δaco1_Ppta)', '').strip()
 
                 # Nur die Stämme Δaco1 und Δaco1_Ppta nicht plottieren
-                #if 'Δaco1' in column or 'Δaco1_Ppta' in column:
                 if 'TU2.0' in column or 'TU2.0_Ppta' in column:
                     continue  # Überspringe diese Iteration, wenn der Stamm nicht passt
 
                 linestyle = '-'  # Standardlinienstil
-                #if '(TU2.0_Ppta)' in column:
                 if '(Δaco1_Ppta)' in column:
                     linestyle = '--'  # Gestrichelte Linie für TU2.0_Ppta
                 marker = marker_fix.get(base_name, 'o')
@@ -158,12 +126,10 @@ for sheet_name in sheet_names:
                     base_name = column.replace('(TU2.0)', '').replace('(Δaco1)', '').replace('(TU2.0_Ppta)', '').replace('(Δaco1_Ppta)','').strip()
 
                     # Nur die Stämme Δaco1 und Δaco1_Ppta nicht plottieren
-                    #if 'Δaco1' in column or 'Δaco1_Ppta' in column:
                     if 'TU2.0' in column or 'TU2.0_Ppta' in column:
                         continue  # Überspringe diese Iteration, wenn der Stamm nicht passt
 
                     linestyle = '-'  # Standardlinienstil
-                    #if '(TU2.0_Ppta)' in column:
                     if '(Δaco1_Ppta)' in column:
                         linestyle = '--'  # Gestrichelte Linie für TU2.0_Ppta
                     marker = marker_fix.get(base_name, 'o')
@@ -202,14 +168,11 @@ for sheet_name in sheet_names:
             # Abschnitt 4: Achsentitel und Diagrammtitel
             ax1.set_xlabel("time (h)", fontsize=12)
             ax1.set_ylabel("concentration (mM)", fontsize=12)
-            #ax1.set_title(f"comparison of TU2.0 & TU2.0_Ppta ({diagramm_titel_1})", fontsize=14)
             ax1.set_title(f"comparison of Δaco1 & Δaco1_Ppta ({diagramm_titel_1})", fontsize=12)
 
             # Abschnitt 5: Legende hinzufügen
             handles = list(substance_handles.values())
             strain_handles = [
-            #mlines.Line2D([], [], color='black', linestyle='-', label='TU2.0'),
-            #mlines.Line2D([], [], color='black', linestyle='--', label='TU2.0_Ppta')
             mlines.Line2D([], [], color='black', linestyle='-', label='Δaco1'),
             mlines.Line2D([], [], color='black', linestyle='--', label='Δaco1_Ppta')
             ]
@@ -235,8 +198,7 @@ for sheet_name in sheet_names:
             fig.tight_layout()
 
             # Abschnitt 8: Diagramm als PNG speichern
-            #output_filename = f"{output_path}/Vergleich_{sheet_name_1}_TU2.0.png"
-            output_filename = f"{output_path}/Vergleich_{sheet_name_1}_aco1.png"
+            output_filename = f"{output_dir}/Vergleich_{sheet_name_1}_aco1.png"
             plt.savefig(output_filename, dpi=300, format='png')
             plt.close()
 

@@ -1,38 +1,22 @@
+from config import base_path, farben_fix, fig_size
+import pandas as pd
 import openpyxl
 import matplotlib.pyplot as plt
 import os
 
-# Pfad zur Excel-Datei und Speicherpfad für die Diagramme
-excel_datei = r'/home/thomas/Desktop/bsc/Auswertung_CBilanz.xlsx'
-speicherpfad = r"/home/thomas/Desktop/bsc/Diagramme/C-Bilanz/"
+# Pfad zur Excel-Datei mit mehreren Arbeitsmappen
+excel_path = os.path.join(base_path, "Rohdaten", "Auswertung_CBilanz.xlsx")
 
-# Ordner für Diagramme erstellen, falls nicht vorhanden
-if not os.path.exists(speicherpfad):
-    os.makedirs(speicherpfad)
-
-# Wissenschaftlich bevorzugte Farben
-farben_fix = {
-    "2,3-Butanediol": "#1f77b4",  # Blau
-    "Acetate": "#ff7f0e",  # Orange
-    "2-Butanone": "#2ca02c",  # Grün
-    "Propionate": "#d62728",  # Rot
-    "1-Propanol": "#9467bd",  # Violett
-    "Ethylene glycol": "#8c564b",  # Braun
-    "Methanol": "#e377c2",  # Pink
-    "Ethanol": "#7f7f7f",  # Grau
-    "1,2-Propanediol": "#ffcc00",  # Dunkelgelb
-    "Biomass": "#ff99cc",  # Helles Rosa
-    "Propanal": "#bcbd22",  # Olivgrün
-    "Formate": "#00aaff",  # Helles Blau
-    "2-Butanol": "#ff1493"  # Helles Pink
-}
+output_subpath = os.path.join("Diagramme", "CBilanz")
+output_dir = os.path.join(base_path, output_subpath)
+os.makedirs(output_dir, exist_ok=True)
 
 # Funktion zum Abrufen einer Farbe für eine Substanz
 def get_color(substanz):
     return farben_fix.get(substanz, "#d9d9d9")
 
 # Arbeitsmappe öffnen
-wb = openpyxl.load_workbook(excel_datei, data_only=True)
+wb = openpyxl.load_workbook(excel_path, data_only=True)
 
 # Durch jedes Blatt iterieren
 for sheet_name in wb.sheetnames:
@@ -60,7 +44,7 @@ for sheet_name in wb.sheetnames:
     delta_ppta_werte = [(wert, std, name) for wert, std, name in gefilterte_werte if '(Δaco1_Ppta)' in name]
 
     # Diagrammerstellung basierend auf TU2.0, Δaco1, TU2.0_Ppta und Δaco1_Ppta Werten
-    fig, ax = plt.subplots(figsize=(6, 6), dpi=300)
+    fig, ax = plt.subplots(figsize=fig_size, dpi=300)
 
     # Gestapelte Balken erstellen
     bottom_tu2 = 0
@@ -153,7 +137,10 @@ for sheet_name in wb.sheetnames:
     plt.xticks(rotation=45, ha='right', fontsize=10, family='sans-serif')
     plt.yticks(fontsize=10, family='sans-serif')
     plt.tight_layout()
-    plt.savefig(os.path.join(speicherpfad, f"C-Bilanz_{sheet_name}.png"), bbox_inches='tight')
+    output_filename = f"{output_dir}/C-Bilanz_{sheet_name}.png"
+    plt.savefig(output_filename, dpi=300, format='png')
+
+    #plt.savefig(os.path.join(speicherpfad, f"C-Bilanz_{sheet_name}.png"), bbox_inches='tight')
     plt.close()
 
 print("Diagramme erfolgreich erstellt und gespeichert.")

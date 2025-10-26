@@ -1,49 +1,21 @@
+from config import base_path, farben_fix, marker_fix, fig_size
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
 # Pfad zur Excel-Datei mit mehreren Arbeitsmappen
-excel_path = r'/home/thomas/Desktop/bsc/Auswertung_HPLC.xlsx'
-output_path = r'/home/thomas/Desktop/bsc/Diagramme/HPLC'
+excel_path = os.path.join(base_path, "Rohdaten", "Auswertung_HPLC.xlsx")
+
+output_subpath = os.path.join("Diagramme", "HPLC")
+output_dir = os.path.join(base_path, output_subpath)
+os.makedirs(output_dir, exist_ok=True)
 
 # Farben für farbenblindenfreundliche Darstellung (gleich wie C-Bilanz)
-farben_fix = {
-    "2,3-Butanediol": "#1f77b4",  # Blau
-    "Acetate": "#ff7f0e",  # Orange
-    "2-Butanone": "#2ca02c",  # Grün
-    "Propionate": "#d62728",  # Rot
-    "1-Propanol": "#9467bd",  # Violett
-    "Ethylene glycol": "#8c564b",  # Braun
-    "Methanol": "#e377c2",  # Pink
-    "Ethanol": "#7f7f7f",  # Grau
-    "1,2-Propanediol": "#ffcc00",  # Dunkelgelb
-    "Biomass": "#17becf",  # Türkis
-    "Propanal": "#bcbd22",  # Olivgrün
-    "Formate": "#00bfff",  # Cyan
-    "2-Butanol": "#ff1493"  # Helles Pink
-}
 
-# Marker für Substanzen
-marker_fix = {
-    "2,3-Butanediol": 'o',
-    "Acetate": 's',
-    "2-Butanone": 'D',
-    "Propionate": '^',
-    "1-Propanol": '<',
-    "Ethylene glycol": '>',
-    "Methanol": 'p',
-    "Ethanol": 'v',
-    "1,2-Propanediol": '*',
-    "Biomass": 'X',
-    "Propanal": 'H',
-    "Formate": 'P',  # Neuer Marker
-    "2-Butanol": 'P'  # Neuer Marker
-}
 
 # Lade die Excel-Datei
 excel_file = pd.ExcelFile(excel_path)
-
-remove_OD660 = False
 
 # Für jede Arbeitsmappe ein Diagramm erstellen
 for sheet_name in excel_file.sheet_names:
@@ -66,7 +38,7 @@ for sheet_name in excel_file.sheet_names:
     std_dev = df.groupby('time [h]').std()
 
     # Plot vorbereiten
-    fig, ax = plt.subplots(figsize=(6, 6))
+    fig, ax = plt.subplots(figsize=fig_size)
     ax2 = ax.twinx()  # zweite Y-Achse
 
     # Farbe der zweiten Achse für 2-Butanol
@@ -101,10 +73,6 @@ for sheet_name in excel_file.sheet_names:
     # Plotten
     for column in mean_values.columns:
         base_name = column.replace('(TU2.0)', '').replace('(Δaco1)', '').replace('(TU2.0_Ppta)', '').replace('(Δaco1_Ppta)', '').strip()
-
-        # Falls OD660 raus soll, überspringen
-        if remove_OD660 and "OD660" in base_name:
-            continue
 
         # Stammansatz bestimmen
         if '(TU2.0)' in column:
@@ -176,7 +144,7 @@ for sheet_name in excel_file.sheet_names:
     ax.spines['right'].set_visible(True)
     plt.tight_layout()
     # Diagramm als PNG speichern
-    output_filename = f"{output_path}/HPLC_{sheet_name}.png"
+    output_filename = f"{output_dir}/HPLC_{sheet_name}.png"
     plt.savefig(output_filename, dpi=300, format='png')
     plt.close()
 
