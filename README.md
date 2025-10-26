@@ -74,6 +74,10 @@ Platziere die xlsx-Dateien mit den Rohdaten im Verzeichnis **Rohdaten**. Achte d
 
 Führe nun in der virtuellen Umgebung `der.py` aus - die benötigten Verzeichnisse für die Diagramme werden automatisch erstellt.
 
+```bash
+python der.py
+```
+
 ## Warum „DER.PY“?
 
 Der Name leitet sich humorvoll von „Derpiness“ (dt. Dummheit / Tollpatschigkeit) ab und ist gleichzeitig eine Hommage an Derpy Hooves aus My Little Pony.
